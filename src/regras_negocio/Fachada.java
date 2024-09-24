@@ -3,10 +3,10 @@ package regras_negocio;
 import java.util.ArrayList;
 import java.util.List;
 
-import daodb4o.DAO;
-import daodb4o.DAOEntrega;
-import daodb4o.DAOEntregador;
-import daodb4o.DAOProduto;
+import daojpa.DAO;
+import daojpa.DAOEntrega;
+import daojpa.DAOEntregador;
+import daojpa.DAOProduto;
 import modelo.Entrega;
 import modelo.Entregador;
 import modelo.Produto;
