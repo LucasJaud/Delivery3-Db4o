@@ -60,7 +60,7 @@ public class TelaEntregador extends JDialog {
         contentPane.setLayout(new GridLayout(0, 1));
 
         // Tabela
-        tableModel = new DefaultTableModel(new Object[]{"Nome"}, 0);
+        tableModel = new DefaultTableModel(new Object[]{"Nome","Entregas"}, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
 //        scrollPane.setPreferredSize(new Dimension(200, 150));
@@ -116,7 +116,7 @@ public class TelaEntregador extends JDialog {
             tableModel.setRowCount(0); // Limpa a tabela
 
             for (Entregador entregador : entregadores) {
-                tableModel.addRow(new Object[]{entregador.getNome()});
+                tableModel.addRow(new Object[]{entregador.getNome(),entregador.getEntregas().size()});
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar entregadores: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

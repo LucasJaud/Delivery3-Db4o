@@ -2,6 +2,8 @@ package appconsole;
 
 import regras_negocio.Fachada;
 import modelo.Entrega;
+import modelo.Entregador;
+import modelo.Produto;
 
 public class Consultar {
 	
@@ -23,6 +25,14 @@ public class Consultar {
 			for(Entrega entrega: Fachada.entregasProduto(1))
 				System.out.println(entrega);
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		try {
+			System.out.println("\nentregadores com mais de n entregas");
+			for(Entregador entregador : Fachada.entregadoresNumEntregas(2))
+					System.out.println(entregador.getNome()+ " -- entregas:"+ entregador.getEntregas().size());
+		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 		

@@ -1,5 +1,6 @@
 package daodb4o;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.db4o.query.Query;
@@ -19,6 +20,23 @@ public class DAOEntregador extends DAO<Entregador>{
 			return resultados.get(0);
 		else
 			return null;
+	}
+	
+	public List<Entregador> entregadorNumEntrega(int n){
+		manager.ext().purge();
+		Query q = manager.query();
+		q.constrain(Entregador.class);
+		
+		List<Entregador> entregadores = q.execute();
+		
+		List<Entregador> res = new ArrayList<>();
+		for(Entregador e : entregadores) {
+			if(e.getEntregas().size() >= n)
+				res.add(e);
+		}
+		
+		return res;
+		
 	}
 		
 }

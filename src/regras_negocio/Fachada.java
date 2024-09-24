@@ -194,6 +194,11 @@ public class Fachada {
 		List<Entrega> lista = daoentrega.EntregaProduto(id);
 		return lista;
 	}
+	public static List<Entregador> entregadoresNumEntregas(int n){
+		List<Entregador> lista = daoentregador.entregadorNumEntrega(n);
+		
+		return lista;
+	}
 	
 	
 	public static List<Produto> getListaProdutosTemporaria() {
