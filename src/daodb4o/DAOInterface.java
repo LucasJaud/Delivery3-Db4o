@@ -1,4 +1,4 @@
-package daojpa;
+package daodb4o;
 /**********************************
  * IFPB - SI
  * POB - Persistencia de Objetos
