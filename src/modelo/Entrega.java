@@ -20,7 +20,7 @@ public Entrega(String data,String endereco){
 public String toString() {
 	String texto = "Entrega: id=" + id + ", data=" + data + ", endereco=" + endereco + ", entregador=" + entregador.getNome();
 	for(Produto produto: produtos){
-		texto += "\n produtos:" +produto.getDesc();
+		texto += "\n produtos:" +produto.getDescricao();
 	}
 	
 	return texto;

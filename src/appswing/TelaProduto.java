@@ -1,6 +1,7 @@
 package appswing;
 
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -60,67 +61,71 @@ public class TelaProduto extends JDialog {
 	/**
 	 * Create the frame.
 	 */
-	public TelaProduto(JFrame parent) {
-		 super(parent, "Gerenciar Produtos", true);
-	        setSize(600, 400);
-	        setLocationRelativeTo(null);
-	        setLayout(new BorderLayout());
-	        
-	        JPanel panelInputs = new JPanel(new GridLayout(2, 2, 10, 10));
+    public TelaProduto(JFrame parent) {
+        super(parent, "Gerenciar Produtos", true);
+        setBounds(100, 100, 600, 500);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+        
+        // Painel da tabela (central)
+        tableModel = new DefaultTableModel(new Object[]{"ID", "Descrição"}, 0);
+        table = new JTable(tableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.CENTER);
 
-//	        panelInputs.add(new JLabel("ID do Produto:"));
-//	        idField = new JTextField();
-//	        panelInputs.add(idField);
+        // Painel para inputs e botões (inferior)
+        JPanel panelBottom = new JPanel(new BorderLayout());
+        
+        // Painel de inputs com FlowLayout
+        JPanel panelInputs = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelInputs.add(new JLabel("Descrição:"));
+        descricaoField = new JTextField(20); // Ajuste o tamanho do campo conforme necessário
+        panelInputs.add(descricaoField);
+        
+        panelBottom.add(panelInputs, BorderLayout.NORTH); // Inputs no topo do painel inferior
+        
+        // Painel de botões
+        JPanel panelButtons = new JPanel();
+        atualizarButton = new JButton("Atualizar Lista");
+        inserirButton = new JButton("Inserir Produto");
+        removerButton = new JButton("Remover Produto");
 
-	        panelInputs.add(new JLabel("Descrição:"));
-	        descricaoField = new JTextField();
-	        panelInputs.add(descricaoField);
+        panelButtons.add(atualizarButton);
+        panelButtons.add(inserirButton);
+        panelButtons.add(removerButton);
+        
+        panelBottom.add(panelButtons, BorderLayout.SOUTH); // Botões na parte inferior do painel inferior
+        
+        // Adicionar o painel inferior à parte inferior da janela principal
+        add(panelBottom, BorderLayout.SOUTH);
 
-	        add(panelInputs, BorderLayout.NORTH);
-	        
-	        tableModel = new DefaultTableModel(new Object[]{"ID", "Descrição"}, 0);
-	        table = new JTable(tableModel);
-	        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	        JScrollPane scrollPane = new JScrollPane(table);
-	        add(scrollPane, BorderLayout.CENTER);
-	        
-	        JPanel panelButtons = new JPanel();
-	        atualizarButton = new JButton("Atualizar Lista");
-	        inserirButton = new JButton("Inserir Produto");
-	        removerButton = new JButton("Remover Produto");
-
-	        panelButtons.add(atualizarButton);
-	        panelButtons.add(inserirButton);
-	        panelButtons.add(removerButton);
-
-	        add(panelButtons, BorderLayout.SOUTH);
-	        
-	     // Carregar a lista de produtos ao abrir a tela
-	        carregarListaProdutos();
-	        
-	        // ActionListener para atualizar a lista de produtos
-	        atualizarButton.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                carregarListaProdutos();
-	            }
-	        });
-	        
-	     // ActionListener para remover produto
-	        removerButton.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                removerProduto();
-	            }
-	        }); 
-	        
-	        inserirButton.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	            	inserirProduto();
-	            }
-	        });   
-	}
+        // Carregar a lista de produtos ao abrir a tela
+        carregarListaProdutos();
+        
+        // ActionListener para atualizar a lista de produtos
+        atualizarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carregarListaProdutos();
+            }
+        });
+        
+        // ActionListener para remover produto
+        removerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removerProduto();
+            }
+        }); 
+        
+        inserirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inserirProduto();
+            }
+        });   
+    }
 	
 	 private void carregarListaProdutos() {
 		 try {
@@ -139,7 +144,7 @@ public class TelaProduto extends JDialog {
 		        // Itera sobre os produtos e os adiciona à tabela
 		        for (Produto p : produtos) {
 		            if (p != null) {
-		                tableModel.addRow(new Object[]{p.getId(), p.getDesc()});
+		                tableModel.addRow(new Object[]{p.getId(), p.getDescricao()});
 		            }
 		        }
 		    } catch (Exception e) {

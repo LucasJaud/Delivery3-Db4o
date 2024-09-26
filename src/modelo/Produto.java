@@ -3,12 +3,12 @@ package modelo;
 public class Produto {
 
 private int id;
-private String desc;
+private String descricao;
 
 public Produto() {}
 
-public Produto(String desc) {
-	this.desc =desc;
+public Produto(String descricao) {
+	this.descricao = descricao;
 }
 
 public int getId() {
@@ -17,16 +17,16 @@ public int getId() {
 public void setCodigo(int id) {
 	this.id = id;
 }
-public String getDesc() {
-	return desc;
+public String getDescricao() {
+	return descricao;
 }
-public void setDesc(String desc) {
-	this.desc = desc;
+public void setDescricao(String desc) {
+	this.descricao = desc;
 }
 
 @Override
 public String toString() {
-	return "Produto: id=" + id + ", desc=" + desc ;
+	return "Produto: id=" + id + ", desc=" + descricao ;
 }
 
 }

@@ -1,12 +1,10 @@
 package appswing;
 
-import java.awt.EventQueue;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+
 import javax.swing.border.EmptyBorder;
 import regras_negocio.Fachada;
 import modelo.Entrega;
@@ -44,17 +42,16 @@ public class TelaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaPrincipal() {
-		 // Configurações da janela principal
         setTitle("Delivery");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(600, 400);
         setLocationRelativeTo(null); // Centraliza a janela
         
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 1, 10, 10)); // Grid com 4 linhas para os botões
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Margens no painel
         
-        // Botão para abrir a tela de produtos
+       
         JButton btnProdutos = new JButton("Gerenciar Produtos");
         btnProdutos.addActionListener(new ActionListener() {
             @Override
@@ -64,7 +61,7 @@ public class TelaPrincipal extends JFrame {
             }
         });
         
-     // Botão para abrir a tela de entregadores
+     
         JButton btnEntregadores = new JButton("Gerenciar Entregadores");
         btnEntregadores.addActionListener(new ActionListener() {
             @Override
@@ -74,7 +71,7 @@ public class TelaPrincipal extends JFrame {
             }
         });
         
-     // Botão para abrir a tela do carrinho de compras (lista de produtos)
+     
         JButton btnCarrinho = new JButton("Carrinho de Compras");
         btnCarrinho.addActionListener(new ActionListener() {
             @Override
@@ -84,7 +81,7 @@ public class TelaPrincipal extends JFrame {
             }
         });
         
-        // Botão para abrir a tela das entregas
+        
         JButton btnEntregas = new JButton("Gerenciar Entregas");
         btnEntregas.addActionListener(new ActionListener() {
             @Override
@@ -94,13 +91,13 @@ public class TelaPrincipal extends JFrame {
             }
         });
         
-     // Adicionando os botões ao painel
+     
         panel.add(btnProdutos);
         panel.add(btnEntregadores);
         panel.add(btnCarrinho);
         panel.add(btnEntregas);
         
-        // Adicionando o painel à janela principal
+        
         add(panel);
         
 	}

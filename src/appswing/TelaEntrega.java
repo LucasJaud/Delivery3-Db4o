@@ -1,12 +1,5 @@
 package appswing;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -44,70 +37,139 @@ public class TelaEntrega extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public TelaEntrega(JFrame parent) {
-		super(parent, "Consulta de Entregas", true); // 'true' indica que é modal
-        setBounds(100, 100, 600, 400);
+    public TelaEntrega(JFrame parent) {
+        super(parent, "Consulta de Entregas", true); 
+        setBounds(100, 100, 600, 500);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(new BorderLayout(0, 0));
+
+        tableModel = new DefaultTableModel(new Object[][]{}, new String[]{"ID", "Data", "Endereço", "Entregador", "Ver Produtos"});
+
         
-        tableModel = new DefaultTableModel(new Object[][]{},new String[]{"ID", "Data", "Endereço", "Entregador","Ver Produtos"});
-        
-     // Tabela
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         contentPanel.add(scrollPane, BorderLayout.CENTER);
-        
-        // Painel inferior com botão de atualizar
-        JPanel panel = new JPanel();
-        getContentPane().add(panel, BorderLayout.SOUTH);
 
+        
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new GridLayout(3, 3, 10, 10)); 
+        getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+
+        // Campo de busca por endereço
+        JLabel lblEndereco = new JLabel("Buscar por Endereço:");
+        bottomPanel.add(lblEndereco);
+        
+        JTextField enderecoField = new JTextField();
+        bottomPanel.add(enderecoField);
+
+        JButton btnBuscarEndereco = new JButton("Buscar");
+        btnBuscarEndereco.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String endereco = enderecoField.getText();
+                if (!endereco.isEmpty()) {
+                    buscarPorEndereco(endereco);
+                    enderecoField.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(TelaEntrega.this, "Digite um endereço.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        bottomPanel.add(btnBuscarEndereco);
+
+        // Campo de busca por produto (ID)
+        JLabel lblProduto = new JLabel("Buscar por ID do Produto:");
+        bottomPanel.add(lblProduto);
+
+        JTextField produtoField = new JTextField();
+        bottomPanel.add(produtoField);
+
+        JButton btnBuscarProduto = new JButton("Buscar");
+        btnBuscarProduto.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int produtoId = Integer.parseInt(produtoField.getText());
+                    buscarPorProduto(produtoId);
+                    produtoField.setText("");
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(TelaEntrega.this, "Digite um ID de produto válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        bottomPanel.add(btnBuscarProduto);
+
+        
         JButton btnAtualizar = new JButton("Atualizar");
         btnAtualizar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 atualizarListaEntregas();
             }
         });
-        panel.add(btnAtualizar);
-        
-        // Carrega a lista de entregas ao abrir a tela
-        atualizarListaEntregas();
+        bottomPanel.add(new JLabel()); 
+        bottomPanel.add(btnAtualizar);
 
-        // Adiciona um listener para clicar e ver os produtos
+                atualizarListaEntregas();
+
+        
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = table.getSelectedRow();
                 int column = table.getSelectedColumn();
 
-                // Verifica se o botão de "Ver Produtos" foi clicado
+                
                 if (column == 4) {
                     int entregaId = (int) tableModel.getValueAt(row, 0);
                     mostrarProdutosEntrega(entregaId);
                 }
             }
         });
+    }
+    
+    private void buscarPorEndereco(String endereco) {
+        try {
+            List<Entrega> entregas = Fachada.entregasEndereco(endereco);
+            atualizarTabela(entregas);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar por endereço: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void buscarPorProduto(int produtoId) {
+        try {
+            List<Entrega> entregas = Fachada.entregasProduto(produtoId);
+            atualizarTabela(entregas);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar por ID do produto: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void atualizarTabela(List<Entrega> entregas) {
+        tableModel.setRowCount(0);
         
-		}
+        for (Entrega entrega : entregas) {
+            tableModel.addRow(new Object[]{entrega.getId(), entrega.getData(), entrega.getEndereco(), entrega.getEntregador().getNome(), "Ver Produtos"});
+        }
+    }
+    
 	
-	// Método para carregar a lista de entregas no JTable
     private void atualizarListaEntregas() {
         try {
-            // Limpa a tabela atual
+            
             tableModel.setRowCount(0);
 
-            // Busca as entregas no banco
+            
             List<Entrega> entregas = Fachada.listarEntregas();
 
-            // Adiciona as entregas na tabela
+            
             for (Entrega entrega : entregas) {
                 tableModel.addRow(new Object[]{
                     entrega.getId(),
                     entrega.getData(),
                     entrega.getEndereco(),
                     entrega.getEntregador().getNome(),
-                    "Ver Produtos" // Botão para ver produtos
+                    "Ver Produtos" 
                 });
             }
         } catch (Exception e) {
@@ -115,18 +177,18 @@ public class TelaEntrega extends JDialog {
         }
     }
     
-    // Método para exibir os produtos de uma entrega em um novo JDialog
+    
     private void mostrarProdutosEntrega(int entregaId) {
         try {
             Entrega entrega = Fachada.entregaPorId(entregaId);
             List<Produto> produtos = entrega.getProdutos();
 
-            // Criar um novo JDialog para mostrar os produtos
+            
             JDialog produtosDialog = new JDialog(this, "Produtos da Entrega " + entregaId, true);
             produtosDialog.setSize(400, 300);
             produtosDialog.setLayout(new BorderLayout());
 
-            // Modelo da tabela de produtos
+            
             DefaultTableModel produtosTableModel = new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Código", "Descrição"}
@@ -136,11 +198,11 @@ public class TelaEntrega extends JDialog {
             JScrollPane produtosScrollPane = new JScrollPane(produtosTable);
             produtosDialog.add(produtosScrollPane, BorderLayout.CENTER);
 
-            // Adiciona os produtos na tabela
+            
             for (Produto produto : produtos) {
                 produtosTableModel.addRow(new Object[]{
                     produto.getId(),
-                    produto.getDesc()
+                    produto.getDescricao()
                 });
             }
 

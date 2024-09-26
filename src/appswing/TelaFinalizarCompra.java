@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class TelaFinalizarCompra extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public TelaFinalizarCompra(Window parent) {
+    public TelaFinalizarCompra(Window parent) {
 		super(parent, "Finalizar Compra", ModalityType.APPLICATION_MODAL);
         setSize(600, 400);
         setLayout(new BorderLayout());
@@ -59,7 +60,7 @@ public class TelaFinalizarCompra extends JDialog {
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
      // Campos de informações de entrega
-        infoPanel.add(new JLabel("Nome:"));
+        infoPanel.add(new JLabel("Entregador:"));
         entregadorField = new JTextField();
         infoPanel.add(entregadorField);
         

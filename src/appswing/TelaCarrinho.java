@@ -65,7 +65,7 @@ public class TelaCarrinho extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public TelaCarrinho(JFrame parent) {
+    public TelaCarrinho(JFrame parent) {
 		super(parent, "Carrinho de Compras", true);
 		setSize(800,600);
 //		setBounds(100, 100, 450, 300);
@@ -74,34 +74,34 @@ public class TelaCarrinho extends JDialog {
 	     contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 	     getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-	  // Tabela de Produtos Disponíveis
+	  
 	        produtosTableModel = new DefaultTableModel(new Object[]{"ID", "Descrição"}, 0);
 	        produtosTable = new JTable(produtosTableModel);
 	        produtosTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	        produtosScrollPane = new JScrollPane(produtosTable);
 		
-	     // Tabela de Produtos no Carrinho
+	     
 	        carrinhoTableModel = new DefaultTableModel(new Object[]{"ID", "Descrição"}, 0);
 	        carrinhoTable = new JTable(carrinhoTableModel);
 	        carrinhoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	        carrinhoScrollPane = new JScrollPane(carrinhoTable);
         
-	     // Divisão da tela em duas partes: Produtos e Carrinho
+	    
 	        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, produtosScrollPane, carrinhoScrollPane);
-	        splitPane.setDividerLocation(250);  // Divide a tela com mais espaço para produtos
+	        splitPane.setDividerLocation(250);  
 	        contentPanel.add(splitPane, BorderLayout.CENTER);
 
-	        // Painel inferior para o input e botões
+	        
 	        JPanel panelInputsButtons = new JPanel(new GridLayout(2, 1, 10, 10));
 	        
-	        // Painel para o campo de texto (ID do produto)
+	        
 	        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	        inputPanel.add(new JLabel("ID do Produto:"));
 	        idField = new JTextField(10);
 	        inputPanel.add(idField);
 	        panelInputsButtons.add(inputPanel);
 	
-	     // Painel para os botões
+	     
 	        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	        inserirButton = new JButton("Inserir no Carrinho");
 	        removerButton = new JButton("Remover do Carrinho");
@@ -115,10 +115,10 @@ public class TelaCarrinho extends JDialog {
 
 	        getContentPane().add(panelInputsButtons, BorderLayout.SOUTH);
 
-	        // Carregar a lista de produtos (exemplo)
+	        
 	        carregarListaProdutos();
 	        
-	     // Ação do botão "Inserir no Carrinho"
+	     
 	        inserirButton.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
@@ -126,7 +126,7 @@ public class TelaCarrinho extends JDialog {
 	            }
 	        });
 
-	        // Ação do botão "Remover do Carrinho"
+	        
 	        removerButton.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
@@ -153,22 +153,21 @@ public class TelaCarrinho extends JDialog {
 	
 	private void carregarListaProdutos() {
 		 try {
-		        // Chama o método da Fachada para listar os produtos
 		        List<Produto> produtos = Fachada.listarProdutos();
 
-		        // Verifica se a lista não é nula e tem produtos
+		        
 		        if (produtos == null || produtos.isEmpty()) {
 		            JOptionPane.showMessageDialog(this, "Nenhum produto encontrado.");
-		            return;  // Sai do método se não houver produtos
+		            return;  
 		        }
 
-		        // Limpa a tabela antes de adicionar novos produtos
+		       
 		        produtosTableModel.setRowCount(0);
 
-		        // Itera sobre os produtos e os adiciona à tabela
+		       
 		        for (Produto p : produtos) {
 		            if (p != null) {
-		            	produtosTableModel.addRow(new Object[]{p.getId(), p.getDesc()});
+		            	produtosTableModel.addRow(new Object[]{p.getId(), p.getDescricao()});
 		            }
 		        }
 		    } catch (Exception e) {
@@ -182,12 +181,12 @@ public class TelaCarrinho extends JDialog {
 			
 			List<Produto> carrinho =Fachada.getListaProdutosTemporaria();
 //			if (carrinho == null || carrinho.isEmpty())
-//	            return;  // Sai do método se não houver produtos
+//	            return;
 			
 			carrinhoTableModel.setRowCount(0);
 			for (Produto p : carrinho) {
 	            if (p != null) {
-	            	carrinhoTableModel.addRow(new Object[]{p.getId(), p.getDesc()});
+	            	carrinhoTableModel.addRow(new Object[]{p.getId(), p.getDescricao()});
 	            }
 			}
 			
@@ -233,5 +232,4 @@ public class TelaCarrinho extends JDialog {
 		TelaFinalizarCompra telaFinalizar = new TelaFinalizarCompra(this);
         telaFinalizar.setVisible(true);
 	} 
-
 }
